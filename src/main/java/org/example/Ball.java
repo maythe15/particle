@@ -28,7 +28,7 @@ public class Ball {
     }
 
     public boolean isColliding(int x, int y){
-        double distance = Math.sqrt(Math.pow(this.x+size/2-x,2)+Math.pow(this.y+size/2-y,2));
+        double distance = Math.sqrt(Math.pow(this.x+size/8-x,2)+Math.pow(this.y+size/8-y,2));
         return (distance< (double) (this.size) /4);
     }
 
@@ -99,20 +99,16 @@ public class Ball {
         if (x<= (double) size /2){
             vx=(-vx)*bounce;
             x=(double) size/2+buffer;
-            System.out.println("buff1");
         } else if ( x>=width- (double) size /2) {
             vx=(-vx)*bounce;
             x=width-(double) size /2-buffer;
-            System.out.println("buff2");
         }
         if (y<= (double) size/2){
             vy=(-vy)*bounce;
             y=(double) size/2+buffer;
-            System.out.println("buff3");
         } else if (y>=height- (double) size /2) {
             vy=(-vy)*bounce;
             y=height-(double) size /2-buffer;
-            System.out.println("buff4");
         }
     }
 

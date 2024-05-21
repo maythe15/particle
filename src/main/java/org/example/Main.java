@@ -69,7 +69,7 @@ public class Main {
                 }
             }
 
-            //testray.calculate(balls, screen.getWidth(), screen.getHeight());
+            testray.calculate(balls, screen.getWidth(), screen.getHeight());
             screen.update(g);
             heat-=screen.getHeatChange();
             gravity-=screen.getGravChange();
