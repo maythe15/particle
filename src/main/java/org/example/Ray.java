@@ -42,7 +42,7 @@ public class Ray {
             if (wall>0&&traversed>50){
                 double wallAngle=-Math.PI/2*3+(wall-2)*Math.PI/2;
                 double anglediff=angle-wallAngle;
-                double outangle=wallAngle+Math.PI-anglediff;
+                double outangle=wallAngle-anglediff;
                 bounced=true;
                 this.endx = checkx;
                 this.endy = checky;
@@ -60,7 +60,7 @@ public class Ray {
             for (Ball ball: balls){
                 if (ball.isColliding((int) checkx, (int) checky)&&traversed>50){
                     double angleToBallCenter=Math.atan2((ball.y-this.y), (ball.x-this.x));
-                    double anglediff=angle-angleToBallCenter*5;
+                    double anglediff=angleToBallCenter*2-angle;
                     //double outangle=angleToBallCenter-anglediff;
                     bounced=true;
                     this.endx = checkx;
