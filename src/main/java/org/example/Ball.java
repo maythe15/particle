@@ -28,7 +28,7 @@ public class Ball {
     }
 
     public boolean isColliding(int x, int y){
-        double distance = Math.sqrt(Math.pow(this.x+size/8-x,2)+Math.pow(this.y+size/8-y,2));
+        double distance = Math.sqrt(Math.pow(this.x+size/12-x,2)+Math.pow(this.y+size/12-y,2));
         return (distance< (double) (this.size) /4);
     }
 

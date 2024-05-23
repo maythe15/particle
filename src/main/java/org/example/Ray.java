@@ -61,15 +61,13 @@ public class Ray {
                 if (ball.isColliding((int) checkx, (int) checky)&&traversed>50){
                     double angleToBallCenter=Math.atan2((ball.y-this.y), (ball.x-this.x));
                     double anglediff=angle-angleToBallCenter;
-                    double outangle=angleToBallCenter+Math.PI-anglediff;
+                    double outangle=angleToBallCenter-anglediff;
                     bounced=true;
                     this.endx = checkx;
                     this.endy = checky;
-                    if (!(checky==endy&&checkx==endx)) {
-                        if (bounces > 0) {
-                            this.subray = new Ray(checkx, checky, outangle, bounces - 1, length - traversed);
-                            return this.subray.calculate(balls, w, h) + traversed;
-                        }
+                    if (bounces > 0) {
+                        this.subray = new Ray(checkx, checky, outangle, bounces - 1, length - traversed);
+                        return this.subray.calculate(balls, w, h) + traversed;
                     }
                 }
             }

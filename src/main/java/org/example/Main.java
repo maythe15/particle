@@ -14,7 +14,7 @@ public class Main {
         Graphics g=screen.getGraphics();
         screen.paint(g);
         //screen.update(g);
-        Ray testray=new Ray(65,50, Math.PI/6, 3, 5000);
+        Ray testray=new Ray(65,50, Math.PI/6, 30, 5000);
         rays.add(testray);
         //balls.add(new Ball(80,80,10,100, 0.75));
         int collision_iterations=1;
