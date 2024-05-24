@@ -21,7 +21,6 @@ public class Main {
         boolean adding;
         double gravity=0;
 
-        boolean enableRays=false;
         while (true){
             double total_velocity=0;
             for (int i=0; i<balls.size(); i++){
@@ -80,24 +79,22 @@ public class Main {
             if (collision_iterations<0) {
                 collision_iterations=0;
             }
-            if (enableRays) {
-                int raychange = screen.getRayChange();
-                if (!(raychange == 0)) {
-                    raycount += raychange;
-                    if (raycount < 0) {
-                        raycount = 0;
-                    }
-                    rays.clear();
-                    for (int i = 0; i < raycount; i++) {
-                        Ray ray = new Ray(65, 50, Math.PI / raycount * 2 * i, 30, 5000);
-                        rays.add(ray);
-                    }
+            int raychange = screen.getRayChange();
+            if (!(raychange == 0)) {
+                raycount -= raychange;
+                if (raycount < 0) {
+                    raycount = 0;
                 }
-                for (Ray ray : rays) {
-                    ray.calculate(balls, screen.getWidth(), screen.getHeight());
-                    ray.x = screen.add_x;
-                    ray.y = screen.add_y;
+                rays.clear();
+                for (int i = 0; i < raycount; i++) {
+                    Ray ray = new Ray(65, 50, Math.PI / raycount * 2 * i, 30, 5000);
+                    rays.add(ray);
                 }
+            }
+            for (Ray ray : rays) {
+                ray.calculate(balls, screen.getWidth(), screen.getHeight());
+                ray.x = screen.add_x;
+                ray.y = screen.add_y;
             }
             //System.out.println("x"+screen.mx+"y"+screen.my);
         }
