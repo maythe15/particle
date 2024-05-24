@@ -39,19 +39,23 @@ public class Ray {
         double buffer=2;
         boolean bounced=false;
         while (traversed<length&&!bounced){
-            int wall=wallCollision(checkx, checky,w,h); // not working :(
+            int wall=wallCollision(checkx, checky,w,h); // :(
             if (wall>0&&traversed>0){
-                double wallAngle=-Math.PI/2*(wall-1);
+                double wallAngle=-Math.PI/2*(wall-2);
                 double angleToWall=angle-wallAngle;
                 double outangle=Math.PI+angleToWall*2+angle;
                 bounced=true;
                 this.endx = checkx;
                 this.endy = checky;
-                if (bounces > 0) {
-                    this.subray = new Ray(checkx, checky, outangle, bounces-1, length - traversed);
-                    return this.subray.calculate(balls, w, h) + traversed;
+                if (!(checky==endy&&checkx==endx)) {
+                    if (bounces > 0) {
+                        this.subray = new Ray(checkx, checky, outangle, bounces, length - traversed);
+                        return this.subray.calculate(balls, w, h) + traversed;
+                    }
                 } else {
-                    return traversed;
+                    if (this.subray!=null){
+                        return this.subray.calculate(balls, w, h) + traversed;
+                    }
                 }
             }
             for (Ball ball: balls){
