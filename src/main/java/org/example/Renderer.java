@@ -109,7 +109,6 @@ public class Renderer extends Frame {
         addMouseWheelListener(new MouseAdapter() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                System.out.println(raying);
                 if (sizing){
                     gravscroll +=e.getUnitsToScroll()/3;
                 } else if (iterating) {
@@ -154,7 +153,7 @@ public class Renderer extends Frame {
         g.fillRect(0,0,getWidth(), getHeight());
         g.setColor(Color.BLACK);
         for (Ball ball: balls){
-            //g.drawOval((int) ball.x-ball.size/6, (int) ball.y-ball.size/6, ball.size/2, ball.size/2);
+            g.drawOval((int) ball.x-ball.size/6, (int) ball.y-ball.size/6, ball.size/2, ball.size/2);
         }
         for (Ray ray: rays){
             ray.draw(g);
