@@ -69,12 +69,19 @@ public class Renderer extends Frame {
                     adding = true;
                     add_x=e.getX();
                     add_y=e.getY();
-                } else if (e.getButton()==MouseEvent.BUTTON3) {
+                } else if (e.getButton()==MouseEvent.BUTTON2) {
                     for (Ball ball:balls){
                         ball.vy=0;
                         ball.vx=0;
                         ball.tvy=0;
                         ball.tvx=0;
+                    }
+                } else if (e.getButton()==MouseEvent.BUTTON3){
+                    for (int i=balls.size()-1; i>=0; i--){
+                        Ball ball = balls.get(i);
+                        if (ball.isColliding(add_x, add_y)){
+                            balls.remove(i);
+                        }
                     }
                 }
             }
@@ -147,7 +154,7 @@ public class Renderer extends Frame {
         g.fillRect(0,0,getWidth(), getHeight());
         g.setColor(Color.BLACK);
         for (Ball ball: balls){
-            g.drawOval((int) ball.x-ball.size/6, (int) ball.y-ball.size/6, ball.size/2, ball.size/2);
+            //g.drawOval((int) ball.x-ball.size/6, (int) ball.y-ball.size/6, ball.size/2, ball.size/2);
         }
         for (Ray ray: rays){
             ray.draw(g);
