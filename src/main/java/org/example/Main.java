@@ -13,14 +13,15 @@ public class Main {
         Random rng=new Random();
         Graphics g=screen.getGraphics();
         screen.paint(g);
+        int raycount=0;
         //screen.update(g);
-        Ray testray=new Ray(65,50, Math.PI/6, 30, 5000);
-        rays.add(testray);
         //balls.add(new Ball(80,80,10,100, 0.75));
         int collision_iterations=1;
         int heat=0;
         boolean adding;
         double gravity=0;
+
+        boolean enableRays=false;
         while (true){
             double total_velocity=0;
             for (int i=0; i<balls.size(); i++){
@@ -51,7 +52,7 @@ public class Main {
                     }
                 }
             }
-            screen.setTitle(clock.tick(200)+" fps "+balls.size()+" particles "+heat+" heat "+String.format("%.3g%n", total_velocity/balls.size())+" avg vel "+gravity+" grav "+collision_iterations+" cfix iters");
+            screen.setTitle(clock.tick(200)+" fps "+balls.size()+" particles "+heat+" heat "+String.format("%.3g%n", total_velocity/balls.size())+" avg vel "+gravity+" grav "+collision_iterations+" cfix iters "+raycount+" rays");
             adding=screen.adding;
             double restitution=0.25;
             if (adding){
@@ -69,7 +70,6 @@ public class Main {
                 }
             }
 
-            testray.calculate(balls, screen.getWidth(), screen.getHeight());
             screen.update(g);
             heat-=screen.getHeatChange();
             gravity-=screen.getGravChange();
@@ -80,6 +80,26 @@ public class Main {
             if (collision_iterations<0) {
                 collision_iterations=0;
             }
+            if (enableRays) {
+                int raychange = screen.getRayChange();
+                if (!(raychange == 0)) {
+                    raycount += raychange;
+                    if (raycount < 0) {
+                        raycount = 0;
+                    }
+                    rays.clear();
+                    for (int i = 0; i < raycount; i++) {
+                        Ray ray = new Ray(65, 50, Math.PI / raycount * 2 * i, 30, 5000);
+                        rays.add(ray);
+                    }
+                }
+                for (Ray ray : rays) {
+                    ray.calculate(balls, screen.getWidth(), screen.getHeight());
+                    ray.x = screen.add_x;
+                    ray.y = screen.add_y;
+                }
+            }
+            //System.out.println("x"+screen.mx+"y"+screen.my);
         }
 
     }

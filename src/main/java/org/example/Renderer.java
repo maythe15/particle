@@ -16,18 +16,21 @@ public class Renderer extends Frame {
     private int heatscroll;
     public boolean sizing;
     public boolean iterating;
+    public boolean raying;
     private int gravscroll;
     private int iterscroll;
+    private int rayscroll;
     public Renderer(ArrayList<Ball> balls, ArrayList<Ray> rays) {
         setVisible(true);
         add_x=0;
         add_y=0;
         sizing=false;
         adding=false;
+        raying=false;
         heatscroll =0;
         gravscroll =0;
         iterscroll =0;
-        setSize(300, 500);
+        setSize(1600, 1200);
         createBufferStrategy(2);
         startegy=getBufferStrategy();
         addWindowListener(new WindowAdapter() {
@@ -41,17 +44,21 @@ public class Renderer extends Frame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode()==KeyEvent.VK_CONTROL){
-                    sizing=true;
-                } else if (e.getKeyCode()==KeyEvent.VK_SHIFT) {
                     iterating=true;
+                } else if (e.getKeyCode()==KeyEvent.VK_SHIFT) {
+                    sizing=true;
+                } else if (e.getKeyCode()==KeyEvent.VK_ALT) {
+                    raying=true;
                 }
             }
             @Override
             public void keyReleased(KeyEvent e){
                 if (e.getKeyCode()==KeyEvent.VK_CONTROL){
-                    sizing=false;
-                } else if (e.getKeyCode()==KeyEvent.VK_SHIFT) {
                     iterating=false;
+                } else if (e.getKeyCode()==KeyEvent.VK_SHIFT) {
+                    sizing=false;
+                } else if (e.getKeyCode()==KeyEvent.VK_ALT) {
+                    raying=false;
                 }
             }
         });
@@ -85,14 +92,23 @@ public class Renderer extends Frame {
                 add_x=e.getX();
                 add_y=e.getY();
             }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                add_x=e.getX();
+                add_y=e.getY();
+            }
         });
         addMouseWheelListener(new MouseAdapter() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
+                System.out.println(raying);
                 if (sizing){
                     gravscroll +=e.getUnitsToScroll()/3;
                 } else if (iterating) {
                     iterscroll += e.getUnitsToScroll() / 3;
+                } else if (raying) {
+                    rayscroll+=e.getUnitsToScroll()/3;
                 } else {
                     heatscroll += e.getUnitsToScroll();
                 }
@@ -117,6 +133,12 @@ public class Renderer extends Frame {
     public int getIterChange(){
         int toreturn= iterscroll;
         iterscroll =0;
+        return toreturn;
+    }
+
+    public int getRayChange(){
+        int toreturn= rayscroll;
+        rayscroll =0;
         return toreturn;
     }
 

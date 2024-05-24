@@ -13,7 +13,7 @@ public class Ray {
     double endx;
     double endy;
     public Ray(double x, double y, double angle, int bounces, int length){
-        System.out.println("New ray b "+bounces+" l "+length+" a "+angle);
+        //System.out.println("New ray b "+bounces+" l "+length+" a "+angle);
         this.x=x;
         this.y=y;
         this.angle=angle;
@@ -39,10 +39,14 @@ public class Ray {
         boolean bounced=false;
         while (traversed<length&&!bounced){
             int wall=wallCollision(checkx, checky,w,h);
-            if (wall>0&&traversed>50){
-                double wallAngle=-Math.PI/2*3+(wall-2)*Math.PI/2;
-                double anglediff=angle-wallAngle;
-                double outangle=wallAngle-anglediff;
+            if (wall>0&&traversed>0){
+                //System.out.println("wallcol"+wall);
+                double wallAngle=-Math.PI/2*(wall-2);
+                double angleToWall=angle-wallAngle;
+                //System.out.println("wallang"+wallAngle);
+                double anglediff=angleToWall*2+Math.PI;
+                double outangle=Math.PI+angleToWall*2;
+                //System.out.println("out"+outangle);
                 bounced=true;
                 this.endx = checkx;
                 this.endy = checky;
@@ -58,18 +62,25 @@ public class Ray {
                 }
             }
             for (Ball ball: balls){
-                if (ball.isColliding((int) checkx, (int) checky)&&traversed>50){
-                    double angleToBallCenter=Math.atan2((ball.y-this.y), (ball.x-this.x));
-                    double anglediff=angleToBallCenter*2-angle;
-                    //double outangle=angleToBallCenter-anglediff;
+                if (ball.isColliding((int) checkx, (int) checky)&&traversed>0){
+                    double outangle=0;
+                    if (checkx<ball.x+ball.size/12) {//left side
+                        if (angle <= Math.PI || angle >= (double) 2 / 3 * Math.PI) {//from left
+                            double angleToBallCenter = Math.atan2((ball.y - checky + ball.size / 12), (ball.x - checkx + ball.size / 12));
+                            outangle = Math.PI + angleToBallCenter * 2;
+                        }
+                    }
                     bounced=true;
                     this.endx = checkx;
                     this.endy = checky;
                     if (bounces > 0) {
-                        this.subray = new Ray(checkx, checky, anglediff, bounces - 1, length - traversed);
+                        this.subray = new Ray(checkx, checky, outangle, bounces - 1, length - traversed);
                         return this.subray.calculate(balls, w, h) + traversed;
                     }
                 }
+            }
+            if (!bounced){
+                this.subray=null;
             }
             traversed+=1;
             checkx+=xdiff;
@@ -81,13 +92,13 @@ public class Ray {
     }
     private int wallCollision(double checkx, double checky, int w, int h){
         if (checkx<0){
-            return 1;
+            return 3;//left
         } else if (checky<0) {
-            return 2;
+            return 4;//top
         } else if (checkx>w) {
-            return 3;
+            return 1;//right
         } else if (checky>h) {
-            return 4;
+            return 2;//bottom
         }
         return 0;
     }
