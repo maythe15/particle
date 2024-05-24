@@ -152,7 +152,9 @@ public class Renderer extends Frame {
         g.setColor(Color.WHITE);
         g.fillRect(0,0,getWidth(), getHeight());
         g.setColor(Color.BLACK);
-        for (Ball ball: balls){
+        //for (Ball ball: balls){
+        for (int i=0; i<balls.size(); i++){
+            Ball ball=balls.get(i);
             g.drawOval((int) ball.x-ball.size/6, (int) ball.y-ball.size/6, ball.size/2, ball.size/2);
         }
         for (Ray ray: rays){

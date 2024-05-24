@@ -58,7 +58,9 @@ public class Ray {
                     }
                 }
             }
-            for (Ball ball: balls){
+            //for (Ball ball: balls){
+            for (int i=0; i<balls.size(); i++){
+                Ball ball=balls.get(i);
                 if (ball.isColliding((int) checkx, (int) checky)&&traversed>0){
                     double angleToBallCenter = Math.atan2((ball.y - checky + ball.size / 12), (ball.x - checkx + ball.size / 12));
                     double outangle = Math.PI + angleToBallCenter * 2-angle;
