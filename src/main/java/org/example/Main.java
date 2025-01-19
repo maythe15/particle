@@ -20,13 +20,14 @@ public class Main {
         int heat=0;
         boolean adding;
         double gravity=0;
+        double vgravity=0;
 
         while (true){
             double total_velocity=0;
             for (int i=0; i<balls.size(); i++){
                 Ball ball=balls.get(i);
                 total_velocity+=Math.sqrt(Math.pow(ball.vx,2)+Math.pow(ball.vy,2));
-
+                ball.vy+=vgravity/10000;
                 for (int j=i+1; j<balls.size(); j++){
                     Ball oball=balls.get(j);
                     oball.attract(ball, gravity);
@@ -51,7 +52,7 @@ public class Main {
                     }
                 }
             }
-            screen.setTitle(clock.tick(200)+" fps "+balls.size()+" particles "+heat+" heat "+String.format("%.3g%n", total_velocity/balls.size())+" avg vel "+gravity+" grav "+collision_iterations+" cfix iters "+raycount+" rays");
+            screen.setTitle(clock.tick(500)+" fps "+balls.size()+" particles "+heat+" heat "+String.format("%.3g%n", total_velocity/balls.size())+" avg vel "+gravity+" grav "+collision_iterations+" cfix iters "+raycount+" rays "+vgravity+" vgrav");
             adding=screen.adding;
             double restitution=0.25;
             if (adding){
@@ -72,6 +73,7 @@ public class Main {
             screen.update(g);
             heat-=screen.getHeatChange();
             gravity-=screen.getGravChange();
+            vgravity-=screen.getVgravChange();
             collision_iterations-=screen.getIterChange();
             if (heat<0) {
                 heat=0;

@@ -16,19 +16,24 @@ public class Renderer extends Frame {
     private int heatscroll;
     public boolean sizing;
     public boolean iterating;
+    public boolean viing;
     public boolean raying;
     private int gravscroll;
     private int iterscroll;
     private int rayscroll;
+    private int vgravscroll;
+    private boolean dark = true;
     public Renderer(ArrayList<Ball> balls, ArrayList<Ray> rays) {
         setVisible(true);
         add_x=0;
         add_y=0;
         sizing=false;
+        viing=false;
         adding=false;
         raying=false;
         heatscroll =0;
         gravscroll =0;
+        vgravscroll=0;
         iterscroll =0;
         setSize(1600, 1200);
         createBufferStrategy(2);
@@ -49,6 +54,10 @@ public class Renderer extends Frame {
                     sizing=true;
                 } else if (e.getKeyCode()==KeyEvent.VK_ALT) {
                     raying=true;
+                } else if (e.getKeyCode()==KeyEvent.VK_D) {
+                    dark=!dark;
+                } else if (e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+                    viing=true;
                 }
             }
             @Override
@@ -59,6 +68,8 @@ public class Renderer extends Frame {
                     sizing=false;
                 } else if (e.getKeyCode()==KeyEvent.VK_ALT) {
                     raying=false;
+                } else if (e.getKeyCode()==KeyEvent.VK_ESCAPE) {
+                    viing=false;
                 }
             }
         });
@@ -114,7 +125,10 @@ public class Renderer extends Frame {
                 } else if (iterating) {
                     iterscroll += e.getUnitsToScroll() / 3;
                 } else if (raying) {
-                    rayscroll+=e.getUnitsToScroll()/3;
+                    rayscroll += e.getUnitsToScroll() / 3;
+                } else if (viing){
+                    //System.out.println(vgravscroll);
+                    vgravscroll += e.getUnitsToScroll() / 3;
                 } else {
                     heatscroll += e.getUnitsToScroll();
                 }
@@ -148,10 +162,19 @@ public class Renderer extends Frame {
         return toreturn;
     }
 
+    public int getVgravChange(){
+        int toreturn  = this.vgravscroll;
+        this.vgravscroll=0;
+        return toreturn;
+    }
+
     public void paint(Graphics g) {
-        g.setColor(Color.WHITE);
+        if (balls==null){
+            return;
+        }
+        g.setColor(this.dark?Color.BLACK:Color.WHITE);
         g.fillRect(0,0,getWidth(), getHeight());
-        g.setColor(Color.BLACK);
+        g.setColor(this.dark?Color.WHITE:Color.BLACK);
         //for (Ball ball: balls){
         for (int i=0; i<balls.size(); i++){
             Ball ball=balls.get(i);
