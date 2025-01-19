@@ -19,6 +19,7 @@ public class Main {
         int collision_iterations=1;
         int heat=0;
         boolean adding;
+        boolean removing;
         double gravity=0;
         double vgravity=0;
 
@@ -58,7 +59,7 @@ public class Main {
             if (adding){
                 boolean willCollide=false;
 
-                Ball temp = new Ball(screen.add_x, screen.add_y, 10, 100, restitution);
+                Ball temp = new Ball(screen.mouse_x, screen.mouse_y, 10, 100, restitution);
                 for (Ball ball: balls){
                     if (ball.isColliding(temp)){
                         willCollide=true;
@@ -67,6 +68,16 @@ public class Main {
                 }
                 if ((!willCollide)){
                     balls.add(temp);
+                }
+            }
+
+            removing=screen.removing;
+            if (removing) {
+                for (int i = balls.size() - 1; i >= 0; i--) {
+                    Ball ball = balls.get(i);
+                    if (ball.isColliding(screen.mouse_x, screen.mouse_y)) {
+                        balls.remove(i);
+                    }
                 }
             }
 
@@ -95,8 +106,8 @@ public class Main {
             }
             for (Ray ray : rays) {
                 ray.calculate(balls, screen.getWidth(), screen.getHeight());
-                ray.x = screen.add_x;
-                ray.y = screen.add_y;
+                ray.x = screen.mouse_x;
+                ray.y = screen.mouse_y;
             }
             //System.out.println("x"+screen.mx+"y"+screen.my);
         }

@@ -10,9 +10,10 @@ public class Renderer extends Frame {
     ArrayList<Ray> rays;
     Canvas canvas;
     BufferStrategy startegy;
-    public int add_x;
-    public int add_y;
+    public int mouse_x;
+    public int mouse_y;
     public boolean adding;
+    public boolean removing;
     private int heatscroll;
     public boolean sizing;
     public boolean iterating;
@@ -25,8 +26,8 @@ public class Renderer extends Frame {
     private boolean dark = true;
     public Renderer(ArrayList<Ball> balls, ArrayList<Ray> rays) {
         setVisible(true);
-        add_x=0;
-        add_y=0;
+        mouse_x =0;
+        mouse_y =0;
         sizing=false;
         viing=false;
         adding=false;
@@ -78,8 +79,8 @@ public class Renderer extends Frame {
             public void mousePressed(MouseEvent e) {
                 if (e.getButton()==MouseEvent.BUTTON1) {
                     adding = true;
-                    add_x=e.getX();
-                    add_y=e.getY();
+                    mouse_x =e.getX();
+                    mouse_y =e.getY();
                 } else if (e.getButton()==MouseEvent.BUTTON2) {
                     for (Ball ball:balls){
                         ball.vy=0;
@@ -88,12 +89,9 @@ public class Renderer extends Frame {
                         ball.tvx=0;
                     }
                 } else if (e.getButton()==MouseEvent.BUTTON3){
-                    for (int i=balls.size()-1; i>=0; i--){
-                        Ball ball = balls.get(i);
-                        if (ball.isColliding(add_x, add_y)){
-                            balls.remove(i);
-                        }
-                    }
+                    removing = true;
+                    mouse_x =e.getX();
+                    mouse_y =e.getY();
                 }
             }
 
@@ -101,20 +99,22 @@ public class Renderer extends Frame {
             public void mouseReleased(MouseEvent e) {
                 if (e.getButton()==MouseEvent.BUTTON1) {
                     adding = false;
+                } else if (e.getButton()==MouseEvent.BUTTON3) {
+                    removing = false;
                 }
             }
         });
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                add_x=e.getX();
-                add_y=e.getY();
+                mouse_x =e.getX();
+                mouse_y =e.getY();
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                add_x=e.getX();
-                add_y=e.getY();
+                mouse_x =e.getX();
+                mouse_y =e.getY();
             }
         });
         addMouseWheelListener(new MouseAdapter() {
